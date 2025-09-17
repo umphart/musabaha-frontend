@@ -276,15 +276,16 @@ const formatCurrency = (value) => {
     try {
       const response = await fetch(`https://musabaha-home-ltd.onrender.com/api/subscriptions?email=${user.email}`);
       const result = await response.json();
-      
+      console.log(result)
       if (result.success) {
         // First set subscriptions
         setSubscriptions(result.data);
         
         // Then fetch payments for these subscriptions
-        const paymentsResponse = await fetch(
-          `https://musabaha-home-ltd.onrender.com/api/user-payments/user/${user.id}`
-        );
+       const paymentsResponse = await fetch(
+  `https://musabaha-home-ltd.onrender.com/api/user-payments/email/${user.email}`
+);
+
         const paymentsData = await paymentsResponse.json();
         
         if (paymentsData.success) {
