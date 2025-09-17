@@ -257,7 +257,7 @@ const AdminPayments = () => {
         new Date(p.date).toLocaleTimeString("en-NG"),
         formatCurrency(p.amount),
         p.note || "Payment on account",
-        p.admin || "Admin"
+        p.admin || p.recorded_by || p.processed_by || "Admin"
       ]);
 
       autoTable(doc, {
