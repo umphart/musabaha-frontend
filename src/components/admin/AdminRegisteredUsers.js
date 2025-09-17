@@ -9,7 +9,7 @@ const AdminRegisteredUsers = () => {
   const [modalType, setModalType] = useState(null); // "docs" | "details"
 
   const API_BASE_URL =
-    process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+    process.env.REACT_APP_API_URL || "https://musabaha-home-ltd.onrender.com/api";
 
   const getAuthToken = () => localStorage.getItem("adminToken");
 

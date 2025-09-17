@@ -63,7 +63,7 @@ const UserProfile = ({ user, users = [], approveUser, setSelectedUser, setModalT
     const fetchSubscriptions = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/subscriptions?email=${user.email}`
+          `https://musabaha-home-ltd.onrender.com/api/subscriptions?email=${user.email}`
         );
         const result = await response.json();
 

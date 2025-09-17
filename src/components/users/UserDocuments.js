@@ -11,7 +11,7 @@ const UserSubsequentPayments = ({ user }) => {
     const fetchPayments = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/user-subsequent-payments/user/${user.id}`
+          `https://musabaha-home-ltd.onrender.com/api/user-subsequent-payments/user/${user.id}`
         );
         const data = await res.json();
         console.log("Payment data:", data);

@@ -44,7 +44,7 @@ const UserDashboard = ({ user, onLogout }) => {
     if (!user?.id) return;
     
     try {
-      const response = await fetch(`http://localhost:5000/api/notifications/user/${user.id}`);
+      const response = await fetch(`https://musabaha-home-ltd.onrender.com/api/notifications/user/${user.id}`);
       const data = await response.json();
       
       if (data.success) {
@@ -115,7 +115,7 @@ const UserDashboard = ({ user, onLogout }) => {
   // Mark notification as read
   const markAsRead = async (notificationId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/notifications/${notificationId}/read`, {
+      const response = await fetch(`https://musabaha-home-ltd.onrender.com/api/notifications/${notificationId}/read`, {
         method: 'PUT'
       });
       
@@ -134,7 +134,7 @@ const UserDashboard = ({ user, onLogout }) => {
   // Mark all notifications as read
   const markAllAsRead = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/notifications/user/${user.id}/read-all`, {
+      const response = await fetch(`https://musabaha-home-ltd.onrender.com/api/notifications/user/${user.id}/read-all`, {
         method: 'PUT'
       });
       
@@ -155,11 +155,11 @@ const UserDashboard = ({ user, onLogout }) => {
         setLoading(true);
         
         // Fetch payments data (contains plot count and outstanding balance)
-        const paymentsRes = await fetch(`http://localhost:5000/api/user-payments/user/${user.id}`);
+        const paymentsRes = await fetch(`https://musabaha-home-ltd.onrender.com/api/user-payments/user/${user.id}`);
         const paymentsData = await paymentsRes.json();
         
         // Fetch subsequent payments
-        const subsequentRes = await fetch(`http://localhost:5000/api/user-subsequent-payments/user/${user.id}`);
+        const subsequentRes = await fetch(`https://musabaha-home-ltd.onrender.com/api/user-subsequent-payments/user/${user.id}`);
         const subsequentData = await subsequentRes.json();
 
         let totalDeposited = 0;

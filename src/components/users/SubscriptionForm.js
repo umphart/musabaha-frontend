@@ -72,7 +72,7 @@ const SubscriptionForm = () => {
    useEffect(() => {
     const fetchPlots = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/plots");
+        const res = await fetch("https://musabaha-home-ltd.onrender.com/api/plots");
         const data = await res.json();
         if (data.success) {
           // only keep Available plots
@@ -255,7 +255,7 @@ const SubscriptionForm = () => {
       }
     }
 
-    const response = await fetch("http://localhost:5000/api/subscriptions", {
+    const response = await fetch("https://musabaha-home-ltd.onrender.com/api/subscriptions", {
       method: "POST",
       body: data,
     });

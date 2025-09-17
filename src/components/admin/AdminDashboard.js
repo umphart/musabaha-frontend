@@ -28,7 +28,7 @@ const AdminDashboard = () => {
   const [lastNotificationTime, setLastNotificationTime] = useState(null);
   const location = useLocation();
 
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://musabaha-home-ltd.onrender.com';
 
   const menuItems = [
     { path: '/admin', name: 'Dashboard', icon: 'fas fa-tachometer-alt' },

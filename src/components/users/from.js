@@ -233,7 +233,7 @@ const SubscriptionForm = () => {
         }
       }
 
-  const response = await fetch("http://localhost:5000/api/subscriptions", {
+  const response = await fetch("https://musabaha-home-ltd.onrender.com/api/subscriptions", {
         method: "POST",
         body: data,
       });

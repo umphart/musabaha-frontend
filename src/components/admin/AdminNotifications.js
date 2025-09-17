@@ -16,7 +16,7 @@ const AdminNotifications = () => {
     const fetchData = async () => {
       try {
         // Fetch users from API
-        const res = await fetch('http://localhost:5000/api/auth/users');
+        const res = await fetch('https://musabaha-home-ltd.onrender.com/api/auth/users');
         
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
