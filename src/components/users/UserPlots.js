@@ -484,7 +484,7 @@ const handleProceedToPayment = (subscription) => {
 
   return (
     <div style={styles.profileContainer}>
-      <h2>Plots Management deloy</h2>
+      <h2>Plots Management</h2>
 
       {/* Subscription Records */}
 <div style={styles.subscriptionsGrid}>
