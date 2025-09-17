@@ -274,7 +274,7 @@ const formatCurrency = (value) => {
  useEffect(() => {
   const fetchSubscriptions = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/subscriptions?email=${user.email}`);
+      const response = await fetch(`https://musabaha-home-ltd.onrender.com/api/subscriptions?email=${user.email}`);
       const result = await response.json();
       
       if (result.success) {
@@ -283,7 +283,7 @@ const formatCurrency = (value) => {
         
         // Then fetch payments for these subscriptions
         const paymentsResponse = await fetch(
-          `http://localhost:5000/api/user-payments/user/${user.id}`
+          `https://musabaha-home-ltd.onrender.com/api/user-payments/user/${user.id}`
         );
         const paymentsData = await paymentsResponse.json();
         
