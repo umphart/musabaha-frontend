@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './LandingPage.css';
 
 const LandingPage = () => {
@@ -11,8 +10,8 @@ const LandingPage = () => {
           <h1>Welcome to MUSABAHA HOMES LTD.</h1>
           <p>Your trusted partner for quality homes and real estate solutions</p>
           <div className="hero-buttons">
-            <Link to="/login" className="btn btn-primary">User Login</Link>
-            <Link to="/admin-login" className="btn btn-secondary">Admin Portal</Link>
+            <a href="#about" className="btn btn-primary">Learn More</a>
+            <a href="#contact" className="btn btn-secondary">Contact Us</a>
           </div>
         </div>
       </section>

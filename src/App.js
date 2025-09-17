@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import './App.css';
 import MHL from './images/MHL.jpg'; 
 import Swal from "sweetalert2";
@@ -13,41 +13,89 @@ import LandingPage from './components/LandingPage';
 
 // Simple Navbar component with navigation links
 const Navbar = ({ isAuthenticated, user, onLogout }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    closeMenu();
+    onLogout();
+  };
+
   return (
-    <nav className="navbar">
-      {/* Left: Logo */}
-      <div className="navbar-left">
-        <img src={MHL} alt="MUSABAHA Logo" className="navbar-logo" />
-      </div>
+    <>
+      <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
+        <div className="navbar-container">
+          {/* Logo and Brand */}
+          <div className="navbar-brand">
+            <img src={MHL} alt="MUSABAHA Logo" className="navbar-logo" />
+            <span className="navbar-title">MUSABAHA HOMES LTD.</span>
+          </div>
 
-      {/* Center: Title */}
-      <div className="navbar-center">
-        <span>MUSABAHA HOMES LTD.</span>
-      </div>
-
-      {/* Right: Menu */}
-      <div className="navbar-menu">
-        <a href="/">Home</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-        {isAuthenticated ? (
-          <>
-            <a href="/dashboard">Dashboard</a>
-            {user && user.role === 'admin' && (
-              <a href="/admin">Admin</a>
+          {/* Desktop Menu */}
+          <div className={`navbar-menu ${isMenuOpen ? 'navbar-menu-open' : ''}`}>
+            <Link to="/" className="navbar-link" onClick={closeMenu}>Home</Link>
+            <a href="#about" className="navbar-link" onClick={closeMenu}>About</a>
+            <a href="#contact" className="navbar-link" onClick={closeMenu}>Contact</a>
+            
+            {isAuthenticated ? (
+              <>
+                <Link 
+                  to={user && user.role === 'admin' ? "/admin" : "/dashboard"} 
+                  className="navbar-link"
+                  onClick={closeMenu}
+                >
+                  Dashboard
+                </Link>
+                <button onClick={handleLogout} className="navbar-button logout-btn">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="navbar-button login-btn" onClick={closeMenu}>
+                  Login
+                </Link>
+                
+              </>
             )}
-            <button onClick={onLogout} className="logout-btn">
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <a href="/login">Login</a>
-            <a href="/admin-login">Admin</a>
-          </>
-        )}
-      </div>
-    </nav>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className={`navbar-toggle ${isMenuOpen ? 'navbar-toggle-open' : ''}`}
+            onClick={toggleMenu}
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggle-icon"></span>
+            <span className="navbar-toggle-icon"></span>
+            <span className="navbar-toggle-icon"></span>
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="navbar-overlay" onClick={closeMenu}></div>
+      )}
+    </>
   );
 };
 
