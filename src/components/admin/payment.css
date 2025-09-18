@@ -1,7 +1,8 @@
-/* plotStyle.css */
 .admin-content {
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .loading {
@@ -9,25 +10,6 @@
   padding: 40px;
   font-size: 18px;
   color: #555;
-}
-
-.alert {
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.alert.success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.alert.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
 }
 
 .content-header {
@@ -53,6 +35,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   min-width: 180px;
+  flex: 1;
 }
 
 .stat-card h3 {
@@ -71,16 +54,28 @@
 
 .header-actions {
   display: flex;
-  gap: 12px;
-  align-items: center;
+  gap: 12px;          /* spacing between select and input */
+  align-items: center; /* vertical align center */
+  margin-top: 10px;    /* optional spacing from above */
 }
 
 .filter-select {
   padding: 8px 12px;
-  border: 1px solid #ddd;
+  font-size: 14px;
   border-radius: 4px;
-  background: white;
+  border: 1px solid #ccc;
+  min-width: 180px;
 }
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  flex: 1;            /* take remaining space */
+  min-width: 200px;
+}
+
 
 .btn {
   padding: 8px 16px;
@@ -88,7 +83,8 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
 }
 
 .btn-primary {
@@ -100,40 +96,17 @@
   background: #2980b9;
 }
 
-.btn-sm {
-  padding: 5px 10px;
-  font-size: 13px;
-}
-
-.btn-info {
-  background: #17a2b8;
-  color: white;
-}
-
-.btn-info:hover {
-  background: #138496;
-}
-
-.btn-success {
-  background: #28a745;
-  color: white;
-  margin-left: 6px;
-}
-
-.btn-success:hover {
-  background: #218838;
-}
-
 .content-table {
   background: white;
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: auto;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 700px;
 }
 
 th, td {
@@ -143,525 +116,70 @@ th, td {
 }
 
 th {
-  background-color: #f8f9fa;
+  background-color: #f9fafb;
   font-weight: 600;
-  color: #495057;
-}
-
-tr:hover {
-  background-color: #f8f9fa;
-}
-
-.status-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.status-badge.completed {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.status-badge.pending {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.status-badge.failed {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.status-badge.unknown {
-  background-color: #e2e3e5;
-  color: #383d41;
-}
-
-@media (max-width: 768px) {
-  .header-stats {
-    flex-direction: column;
-  }
-  
-  .stat-card {
-    width: 100%;
-  }
-  
-  .content-table {
-    overflow-x: auto;
-  }
-  
-  table {
-    min-width: 700px;
-  }
-
-/* Add these styles to your plotStyle.css file */
-
-.action-buttons {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.btn-warning {
-  background: #ffc107;
-  color: #212529;
-}
-
-.btn-warning:hover {
-  background: #e0a800;
-  color: #212529;
-}
-
-.btn-danger {
-  background: #dc3545;
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #c82333;
-}
-
-/* Make sure buttons are properly sized */
-.btn-sm {
-  padding: 4px 8px;
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-/* Responsive adjustments for action buttons */
-@media (max-width: 768px) {
-  .action-buttons {
-    flex-direction: column;
-  }
-  
-  .btn-sm {
-    width: 100%;
-    margin-bottom: 4px;
-  }
-}}
-/* Add these styles to your plotStyle.css */
-
-/* Status badge with icons */
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-  gap: 4px;
-}
-
-.status-badge .icon {
-  font-size: 14px;
-}
-
-.status-badge.completed {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.status-badge.pending {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.status-badge.failed {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.status-badge.unknown {
-  background-color: #e2e3e5;
-  color: #383d41;
-}
-
-/* Recorded by section */
-.payment-admin {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-}
-
-.admin-icon {
-  color: #6c757d;
-  font-size: 14px;
-}
-
-/* Action buttons */
-.action-buttons {
-  display: flex;
-  gap: 6px;
-}
-
-.btn {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
-  font-size: 13px;
-}
-
-.btn-sm {
-  padding: 4px 8px;
-  font-size: 12px;
-}
-
-.btn-info {
-  background: #17a2b8;
-  color: white;
-}
-
-.btn-info:hover {
-  background: #138496;
-}
-
-.btn-success {
-  background: #28a745;
-  color: white;
-}
-
-.btn-success:hover {
-  background: #218838;
-}
-
-/* Loading state */
-.loading {
-  text-align: center;
-  padding: 40px;
-  font-size: 18px;
-  color: #555;
-}
-
-/* Alert styles */
-.alert {
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.alert.success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.alert.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-/* Table styles */
-.content-table {
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 12px 16px;
-  text-align: left;
-  border-bottom: 1px solid #eaeaea;
-}
-
-th {
-  background-color: #f8f9fa;
-  font-weight: 600;
-  color: #495057;
-}
-
-tr:hover {
-  background-color: #f8f9fa;
-}
-
-/* Header styles */
-.content-header {
-  margin-bottom: 24px;
-}
-
-.content-header h2 {
-  margin: 0 0 20px 0;
   color: #333;
-  font-size: 28px;
 }
 
-.header-stats {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+tr:hover {
+  background-color: #f1f3f5;
 }
 
-.stat-card {
-  background: white;
-  padding: 16px 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  min-width: 180px;
-}
-
-.stat-card h3 {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-  color: #666;
-  font-weight: 500;
-}
-
-.stat-amount {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-.header-actions {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.filter-select {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background: white;
-}
-
-.btn-primary {
-  background: #3498db;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #2980b9;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .header-stats {
-    flex-direction: column;
-  }
-  
-  .stat-card {
-    width: 100%;
-  }
-  
-  .content-table {
-    overflow-x: auto;
-  }
-  
-  table {
-    min-width: 700px;
-  }
-  
-  .action-buttons {
-    flex-direction: column;
-  }
-  
-  .btn-sm {
-    width: 100%;
-    margin-bottom: 4px;
-  }
-}
-/* Alert Styles */
-.alert {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-  min-width: 300px;
-  max-width: 500px;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  animation: slideIn 0.3s ease-out;
-  display: flex;
-  align-items: center;
-}
-
-.alert-success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.alert-error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-.alert-info {
-  background-color: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #bee5eb;
-}
-
-.alert-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.alert-icon {
-  margin-right: 12px;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-}
-
-.alert-message {
-  flex: 1;
-  font-weight: 500;
-}
-
-.alert-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  margin-left: 12px;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-  display: flex;
-  align-items: center;
-}
-
-.alert-close:hover {
-  opacity: 1;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* Loading state */
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-  font-size: 18px;
-  color: #666;
-}
-
-/* Action buttons */
 .action-buttons {
   display: flex;
   gap: 8px;
 }
 
+.action-icon {
+  cursor: pointer;
+  font-size: 18px;
+  transition: transform 0.2s;
+}
 
+.action-icon:hover {
+  transform: scale(1.1);
+}
 
 .action-icon.download {
   color: #28a745;
 }
 
-.action-icon.download:hover {
-  background-color: rgba(40, 167, 69, 0.1);
-}
-
 .action-icon.view {
-  color: #17a2b8;
+  color: #007bff;
 }
 
-.action-icon.view:hover {
-  background-color: rgba(23, 162, 184, 0.1);
-}
-.admin-payments-container {
-  padding: 20px;
-}
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header-stats {
+    flex-direction: column;
+  }
 
-.filter-controls {
-  margin-bottom: 20px;
-}
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-.filter-controls select {
-  margin-left: 10px;
-  padding: 5px;
-}
+  .filter-select, .btn-primary {
+    width: 100%;
+  }
 
-.payments-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+  .content-table {
+    overflow-x: auto;
+  }
 
-.payments-table th, .payments-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
+  table {
+    min-width: 700px;
+  }
 
-.payments-table th {
-  background-color: #f2f2f2;
+  .action-buttons {
+    flex-direction: column;
+  }
 }
-
-.status-badge {
-  padding: 3px 8px;
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.status-badge.pending {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.status-badge.approved {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.status-badge.rejected {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 5px;
-}
-
-.btn-approve {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.btn-reject {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.action-complete {
-  color: #6c757d;
-  font-style: italic;
+  font-size: 14px;
+  flex: 1;
+  min-width: 200px;
 }
