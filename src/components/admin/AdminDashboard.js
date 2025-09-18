@@ -515,7 +515,7 @@ const AdminDashboard = ({ onLogout }) => {
               style={{
                 background: 'none',
                 border: 'none',
-                color: '#e74c3c',
+                color: '#ca4738ff',
                 display: 'flex',
                 alignItems: 'center',
                 width: '100%',
