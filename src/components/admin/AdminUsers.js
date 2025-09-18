@@ -814,10 +814,8 @@ const createSimpleTable = (doc, tableData, startY = 50) => {
             {filteredUsers.map(user => (
               <tr key={user.id}>
                 <td>
-                  <div className="user-info">
-                    <FiUser className="user-icon" />
-                    <span>{user.name}</span>
-                  </div>
+                  {user.name}
+              
                 </td>
                 <td>{user.contact}</td>
                 <td>
