@@ -1,0 +1,35 @@
+.app-header {
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center;     /* Center content vertically */
+  padding: 1rem 2rem;
+  background-color: #007BFF; /* Blue background */
+  color: white;
+  position: relative;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-logo {
+  width: 50px;
+  height: auto;
+  border-radius: 15px;
+}
+
+.header-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Optional: Remove or reposition user info if not needed at all */
+.user-info {
+  position: absolute;
+  right: 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+}

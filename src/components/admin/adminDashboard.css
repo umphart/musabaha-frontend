@@ -1277,3 +1277,10 @@ th {
     cursor: pointer;
   }
 }
+.logout-btn:hover {
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+.sidebar-menu li .logout-btn i {
+  margin-right: 10px;
+}

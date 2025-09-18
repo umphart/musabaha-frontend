@@ -10,8 +10,9 @@ import UserDashboard from './components/UserDashboard';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminLogin from './components/admin/AdminLogin';
 import LandingPage from './components/LandingPage';
+import Header from './components/Header'; // Import Header component
 
-// Simple Navbar component with navigation links
+// Navbar component that only shows when not authenticated
 const Navbar = ({ isAuthenticated, user, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -24,7 +25,7 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, []); 
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -39,6 +40,11 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
     onLogout();
   };
 
+  // Don't render navbar if user is authenticated
+  if (isAuthenticated) {
+    return null;
+  }
+
   return (
     <>
       <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
@@ -52,25 +58,9 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
           {/* Desktop Menu */}
           <div className={`navbar-menu ${isMenuOpen ? 'navbar-menu-open' : ''}`}>
             <Link to="/" className="navbar-link" onClick={closeMenu}>Home</Link>
-            
-            {isAuthenticated ? (
-              <>
-                <Link 
-                  to={user && user.role === 'admin' ? "/admin" : "/dashboard"} 
-                  className="navbar-link"
-                  onClick={closeMenu}
-                >
-                  Dashboard
-                </Link>
-                <button onClick={handleLogout} className="navbar-button logout-btn">
-                  Logout
-                </button>
-              </>
-            ) : (
-              <Link to="/login" className="navbar-button login-btn" onClick={closeMenu}>
-                Login
-              </Link>
-            )}
+            <Link to="/login" className="navbar-button create-account-btn" onClick={closeMenu}>
+              Get Started
+            </Link>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -155,7 +145,11 @@ function App() {
   return (
     <Router>
       <div className="App">
+        {/* Show header only if authenticated */}
+        {isAuthenticated && <Header user={user} />}
+
         <Navbar isAuthenticated={isAuthenticated} user={user} onLogout={handleLogout} />
+
         <Routes>
           <Route 
             path="/" 
@@ -181,8 +175,7 @@ function App() {
           />
           <Route 
             path="/admin-login" 
-            element={
-              isAuthenticated && user && user.role === 'admin' ? 
+            element={isAuthenticated && user && user.role === 'admin' ? 
               <Navigate to="/admin" replace /> : 
               <AdminLogin onAdminLogin={handleAdminLogin} />
             } 
