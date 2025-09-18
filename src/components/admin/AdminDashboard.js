@@ -47,6 +47,7 @@ const AdminDashboard = () => {
       setIsMobile(mobile);
       if (!mobile) {
         setSidebarOpen(false);
+        setSidebarCollapsed(true); // Collapse by default on large screens
       }
     };
 
@@ -507,8 +508,6 @@ const AdminDashboard = () => {
                   {error}
                 </div>
               )}
-
-           
 
               {/* Stats Cards */}
               <div className="stats-grid">

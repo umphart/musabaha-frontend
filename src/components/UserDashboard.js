@@ -13,9 +13,10 @@ const UserDashboard = ({ user, onLogout }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Sidebar open state
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  // Sidebar states
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [dashboardData, setDashboardData] = useState({
     plotCount: 0,
@@ -38,6 +39,28 @@ const UserDashboard = ({ user, onLogout }) => {
     { path: '/dashboard/documents', name: 'Subsequent Payments', icon: 'fas fa-file' },
     { path: '/dashboard/subscribe', name: 'Apply for Plot', icon: 'fas fa-file-signature' },
   ];
+
+  // Check screen size on resize
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      
+      // Auto-close sidebar when switching to mobile view
+      if (mobile) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarCollapsed(true); // Collapse by default on large screens
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    
+    // Set initial sidebar state based on screen size
+    handleResize();
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Fetch notifications
   const fetchNotifications = async () => {
@@ -209,131 +232,97 @@ const UserDashboard = ({ user, onLogout }) => {
     };
   }, [user]);
 
-  // Check screen size on resize
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-      
-      // Auto-close sidebar when switching to mobile view
-      if (mobile) {
-        setSidebarOpen(false);
-      } else {
-        setSidebarOpen(true);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    
-    // Set initial sidebar state based on screen size
-    handleResize();
-    
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const handleLogout = () => {
     onLogout();
     navigate('/');
   };
 
-  // Toggle sidebar open state
-  const toggleSidebar = () => setSidebarOpen(open => !open);
+  const toggleSidebar = () => {
+    if (isMobile) {
+      setSidebarOpen(!sidebarOpen);
+    } else {
+      setSidebarCollapsed(!sidebarCollapsed);
+    }
+  };
 
-  // Close sidebar when clicking outside on mobile
-  const handleOverlayClick = () => {
-    if (isMobile && sidebarOpen) {
+  const closeSidebar = () => {
+    if (isMobile) {
       setSidebarOpen(false);
     }
   };
 
+  const getSidebarClass = () => {
+    if (isMobile) {
+      return sidebarOpen ? 'expanded' : 'collapsed';
+    }
+    return sidebarCollapsed ? 'collapsed' : 'expanded';
+  };
+
   return (
-    <div style={styles.dashboardContainer}>
+    <div className="dashboard-container">
       <ToastContainer />
       
-      {/* Mobile hamburger button */}
+      {/* Mobile Toggle Button */}
       {isMobile && (
-        <button 
-          aria-label="Toggle Menu"
-          onClick={toggleSidebar} 
-          style={styles.mobileMenuBtn}
-        >
-          <i className="fas fa-bars"></i>
+        <button className="mobile-menu-btn" onClick={toggleSidebar}>
+          {sidebarOpen ? <i className="fas fa-times"></i> : <i className="fas fa-bars"></i>}
           {unreadCount > 0 && (
-            <span style={styles.notificationBadge}>{unreadCount}</span>
+            <span className="notification-badge">{unreadCount}</span>
           )}
         </button>
       )}
 
       {/* Overlay for mobile when sidebar is open */}
       {isMobile && sidebarOpen && (
-        <div 
-          style={styles.overlay}
-          onClick={handleOverlayClick}
-          aria-hidden="true"
-        />
+        <div className="sidebar-overlay" onClick={closeSidebar}></div>
       )}
 
       {/* Sidebar */}
-      <nav 
-        className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`} 
-        style={{
-          ...styles.sidebar,
-          ...(isMobile ? styles.sidebarMobile : {}),
-          ...(isMobile && sidebarOpen ? styles.sidebarMobileOpen : {}),
-        }}
-        onMouseEnter={!isMobile ? () => setSidebarOpen(true) : undefined}
-        onMouseLeave={!isMobile ? () => setSidebarOpen(false) : undefined}
-        aria-label="Sidebar Navigation"
+      <div
+        className={`sidebar ${getSidebarClass()}`}
+        onMouseEnter={() => !isMobile && setSidebarCollapsed(false)}
+        onMouseLeave={() => !isMobile && setSidebarCollapsed(true)}
       >
-        <div style={styles.sidebarHeader}>
-          <i className="fas fa-user-circle" style={styles.sidebarLogo}></i>
-          {sidebarOpen && (
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <span style={{marginLeft: 10, fontWeight: 'bold', fontSize: '1.2rem'}}>User Dashboard</span>
-              {unreadCount > 0 && (
-                <span style={styles.sidebarNotificationBadge}>{unreadCount}</span>
-              )}
-            </div>
-          )}
+        <div className="sidebar-header">
+          <h3>{!sidebarCollapsed || isMobile ? 'User Dashboard' : '👤'}</h3>
+          {/* Notification bell with badge */}
+          <div className="notification-bell">
+            <i className="fas fa-bell"></i>
+            {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
+          </div>
         </div>
-
-        <ul style={styles.menu}>
+        
+        <ul className="sidebar-menu">
           {menuItems.map(item => {
             const active = location.pathname === item.path;
             return (
-              <li key={item.path} style={styles.menuItem}>
+              <li key={item.path}>
                 <Link
                   to={item.path}
-                  style={{
-                    ...styles.menuLink,
-                    ...(active ? styles.menuActive : {}),
-                  }}
-                  aria-current={active ? 'page' : undefined}
-                  onClick={() => isMobile && setSidebarOpen(false)}
+                  className={active ? 'active' : ''}
+                  title={sidebarCollapsed && !isMobile ? item.name : ''}
+                  onClick={closeSidebar}
                 >
-                  <i className={item.icon} style={styles.icon}></i>
-                  {sidebarOpen && <span style={{marginLeft: 12}}>{item.name}</span>}
+                  <i className={item.icon}></i>
+                  {(!sidebarCollapsed || isMobile) && <span>{item.name}</span>}
                 </Link>
               </li>
             );
           })}
           
           {/* Notifications Menu Item */}
-          <li style={styles.menuItem}>
+          <li>
             <Link
               to="/dashboard/notifications"
-              style={{
-                ...styles.menuLink,
-                ...(location.pathname === '/dashboard/notifications' ? styles.menuActive : {}),
-              }}
-              onClick={() => isMobile && setSidebarOpen(false)}
+              className={location.pathname === '/dashboard/notifications' ? 'active' : ''}
+              onClick={closeSidebar}
             >
-              <i className="fas fa-bell" style={styles.icon}></i>
-              {sidebarOpen && (
+              <i className="fas fa-bell"></i>
+              {(!sidebarCollapsed || isMobile) && (
                 <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
-                  <span style={{marginLeft: 12}}>Notifications</span>
+                  <span>Notifications</span>
                   {unreadCount > 0 && (
-                    <span style={styles.menuNotificationBadge}>{unreadCount}</span>
+                    <span className="menu-badge">{unreadCount}</span>
                   )}
                 </div>
               )}
@@ -343,22 +332,18 @@ const UserDashboard = ({ user, onLogout }) => {
           <li>
             <button 
               onClick={handleLogout} 
-              style={styles.logoutBtn}
+              className="logout-btn"
               aria-label="Logout"
-              onKeyDown={(e) => { if (e.key === 'Enter') handleLogout(); }}
             >
-              <i className="fas fa-sign-out-alt" style={styles.icon}></i>
-              {sidebarOpen && <span style={{marginLeft: 12}}>Logout</span>}
+              <i className="fas fa-sign-out-alt"></i>
+              {(!sidebarCollapsed || isMobile) && <span>Logout</span>}
             </button>
           </li>
         </ul>
-      </nav>
+      </div>
 
       {/* Main Content */}
-      <main style={{
-        ...styles.mainContent,
-        marginLeft: isMobile ? 0 : (sidebarOpen ? 220 : 60),
-      }}>
+      <div className={`main-content ${isMobile && sidebarOpen ? 'sidebar-open' : ''}`}>
         <Routes>
           <Route path="/" element={<DashboardHome dashboardData={dashboardData} loading={loading} />} />
           <Route path="/profile" element={<UserProfile user={user} />} />
@@ -374,45 +359,239 @@ const UserDashboard = ({ user, onLogout }) => {
             />
           } />
         </Routes>
-      </main>
+      </div>
 
-      {/* Internal CSS for responsiveness */}
+      {/* Add CSS for the new sidebar behavior */}
       <style>
         {`
-          .sidebar {
-            background-color: #2c3e50;
-            color: white;
-            height: 100vh;
-            padding-top: 1rem;
-            overflow-x: hidden;
+          .dashboard-container {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            position: fixed;
-            top: 0;
-            left: 0;
-            transition: all 0.3s ease;
-            z-index: 1000;
-          }
-          
-          .sidebar.closed {
-            width: 60px !important;
-          }
-          
-          .sidebar.open {
-            width: 220px !important;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ecf0f1;
+            position: relative;
           }
 
+          /* Sidebar behavior */
+          .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            background: #2c3e50;
+            color: white;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+          }
+
+          .sidebar.collapsed {
+            width: 70px;
+          }
+
+          .sidebar.expanded {
+            width: 250px;
+          }
+
+          /* Mobile styles */
           @media (max-width: 768px) {
-            .sidebar {
+            .sidebar.collapsed {
               transform: translateX(-100%);
-              width: 220px !important;
-              box-shadow: 2px 0 5px rgba(0,0,0,0.3);
             }
             
-            .sidebar.open {
+            .sidebar.expanded {
               transform: translateX(0);
+              width: 280px;
             }
+            
+            .sidebar-overlay {
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background: rgba(0, 0, 0, 0.5);
+              z-index: 999;
+            }
+            
+            .mobile-menu-btn {
+              position: fixed;
+              top: 15px;
+              left: 15px;
+              z-index: 1001;
+              background: #2c3e50;
+              color: white;
+              border: none;
+              border-radius: 4px;
+              padding: 8px;
+              cursor: pointer;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+              position: relative;
+            }
+          }
+
+          /* Desktop styles */
+          @media (min-width: 769px) {
+            .sidebar.collapsed {
+              width: 70px;
+            }
+            
+            .sidebar.expanded {
+              width: 250px;
+            }
+            
+            .main-content {
+              margin-left: 70px;
+              transition: margin-left 0.3s ease;
+            }
+            
+            .sidebar.expanded + .main-content {
+              margin-left: 250px;
+            }
+            
+            .mobile-menu-btn {
+              display: none;
+            }
+            
+            .sidebar-overlay {
+              display: none;
+            }
+          }
+
+          /* Sidebar menu items */
+          .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+          }
+
+          .sidebar-menu li {
+            width: 100%;
+          }
+
+          .sidebar-menu li a, .sidebar-menu li button {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+          }
+
+          .sidebar-menu li a:hover, .sidebar-menu li button:hover {
+            background: #34495e;
+          }
+
+          .sidebar-menu li a.active {
+            background: #3498db;
+          }
+
+          .sidebar-menu li a i, .sidebar-menu li button i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+          }
+
+          .sidebar.collapsed .sidebar-menu li a span,
+          .sidebar.collapsed .sidebar-menu li button span {
+            display: none;
+          }
+
+          .sidebar.collapsed .sidebar-menu li a i,
+          .sidebar.collapsed .sidebar-menu li button i {
+            margin-right: 0;
+          }
+
+          /* Menu badges */
+          .menu-badge {
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+          }
+
+          .sidebar.collapsed .menu-badge {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+          }
+
+          /* Sidebar header */
+          .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #34495e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          .sidebar-header h3 {
+            margin: 0;
+            font-size: 18px;
+          }
+
+          /* Notification bell */
+          .notification-bell {
+            position: relative;
+            cursor: pointer;
+            padding: 5px;
+          }
+
+          .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+          }
+
+          /* Main content */
+          .main-content {
+            flex: 1;
+            padding: 2rem;
+            transition: margin-left 0.3s ease;
+          }
+
+          /* Stats cards */
+          .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+          }
+
+          .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+          }
+
+          .card-icon {
+            font-size: 2rem;
+            color: #3498db;
+            margin-bottom: 1rem;
           }
         `}
       </style>
@@ -423,13 +602,13 @@ const UserDashboard = ({ user, onLogout }) => {
 // Notifications Page Component
 const NotificationsPage = ({ notifications, markAsRead, markAllAsRead }) => {
   return (
-    <div style={styles.notificationsContainer}>
-      <div style={styles.notificationsHeader}>
+    <div className="notifications-container">
+      <div className="notifications-header">
         <h2>Notifications</h2>
         {notifications.length > 0 && (
           <button 
             onClick={markAllAsRead}
-            style={styles.markAllReadBtn}
+            className="mark-all-read-btn"
           >
             Mark all as read
           </button>
@@ -437,22 +616,19 @@ const NotificationsPage = ({ notifications, markAsRead, markAllAsRead }) => {
       </div>
       
       {notifications.length === 0 ? (
-        <div style={styles.noNotifications}>
-          <i className="fas fa-bell-slash" style={styles.noNotificationsIcon}></i>
+        <div className="no-notifications">
+          <i className="fas fa-bell-slash"></i>
           <p>No notifications yet</p>
         </div>
       ) : (
-        <div style={styles.notificationsList}>
+        <div className="notifications-list">
           {notifications.map(notification => (
             <div 
               key={notification.id} 
-              style={{
-                ...styles.notificationItem,
-                ...(notification.is_read ? {} : styles.unreadNotification)
-              }}
+              className={`notification-item ${notification.is_read ? '' : 'unread-notification'}`}
               onClick={() => !notification.is_read && markAsRead(notification.id)}
             >
-              <div style={styles.notificationIcon}>
+              <div className="notification-icon">
                 {notification.type === 'payment_approved' && (
                   <i className="fas fa-money-bill-wave" style={{color: '#27ae60'}}></i>
                 )}
@@ -463,14 +639,14 @@ const NotificationsPage = ({ notifications, markAsRead, markAllAsRead }) => {
                   <i className="fas fa-info-circle" style={{color: '#f39c12'}}></i>
                 )}
               </div>
-              <div style={styles.notificationContent}>
-                <p style={styles.notificationMessage}>{notification.message}</p>
-                <span style={styles.notificationTime}>
+              <div className="notification-content">
+                <p className="notification-message">{notification.message}</p>
+                <span className="notification-time">
                   {new Date(notification.created_at).toLocaleString()}
                 </span>
               </div>
               {!notification.is_read && (
-                <div style={styles.unreadIndicator}></div>
+                <div className="unread-indicator"></div>
               )}
             </div>
           ))}
@@ -486,24 +662,24 @@ const DashboardHome = ({ dashboardData, loading }) => (
     {loading ? (
       <p>Loading dashboard data...</p>
     ) : (
-      <div style={styles.statsCards}>
-        <div style={styles.statCard}>
-          <i className="fas fa-map-marked" style={styles.cardIcon}></i>
+      <div className="stats-cards">
+        <div className="stat-card">
+          <i className="fas fa-map-marked card-icon"></i>
           <h3>My Plots</h3>
           <p>{dashboardData.plotCount} {dashboardData.plotCount === 1 ? 'Property' : 'Properties'}</p>
         </div>
-        <div style={styles.statCard}>
-          <i className="fas fa-credit-card" style={styles.cardIcon}></i>
+        <div className="stat-card">
+          <i className="fas fa-credit-card card-icon"></i>
           <h3>Transactions</h3>
           <p>{dashboardData.transactionCount} {dashboardData.transactionCount === 1 ? 'Transaction' : 'Transactions'}</p>
         </div>
-        <div style={styles.statCard}>
-          <i className="fas fa-money-bill-wave" style={styles.cardIcon}></i>
+        <div className="stat-card">
+          <i className="fas fa-money-bill-wave card-icon"></i>
           <h3>Total Deposited</h3>
           <p>₦{dashboardData.totalDeposited.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
         </div>
-        <div style={styles.statCard}>
-          <i className="fas fa-exclamation-triangle" style={{...styles.cardIcon, color: '#e74c3c'}}></i>
+        <div className="stat-card">
+          <i className="fas fa-exclamation-triangle card-icon" style={{color: '#e74c3c'}}></i>
           <h3>Outstanding Balance</h3>
           <p>₦{dashboardData.outstandingBalance.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
         </div>
@@ -511,235 +687,5 @@ const DashboardHome = ({ dashboardData, loading }) => (
     )}
   </div>
 );
-
-const styles = {
-  dashboardContainer: {
-    display: 'flex',
-    minHeight: '100vh',
-    fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
-    backgroundColor: '#ecf0f1',
-    position: 'relative',
-  },
-  sidebar: {
-    // width controlled inline based on state
-  },
-  sidebarMobile: {
-    transform: 'translateX(-100%)',
-  },
-  sidebarMobileOpen: {
-    transform: 'translateX(0)',
-  },
-  sidebarHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0 16px 1rem 16px',
-    width: '100%',
-    borderBottom: '1px solid #34495e',
-    whiteSpace: 'nowrap',
-  },
-  sidebarLogo: {
-    fontSize: '2rem',
-  },
-  menu: {
-    listStyle: 'none',
-    padding: 0,
-    margin: 0,
-    width: '100%',
-  },
-  menuItem: {
-    width: '100%',
-  },
-  menuLink: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '12px 16px',
-    textDecoration: 'none',
-    color: 'white',
-    width: '100%',
-    transition: 'background 0.3s ease',
-    whiteSpace: 'nowrap',
-  },
-  menuActive: {
-    backgroundColor: '#34495e',
-  },
-  icon: {
-    width: '20px',
-    textAlign: 'center',
-  },
-  logoutBtn: {
-    background: 'none',
-    border: 'none',
-    color: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    padding: '12px 16px',
-    width: '100%',
-    cursor: 'pointer',
-    textAlign: 'left',
-    whiteSpace: 'nowrap',
-  },
-  mainContent: {
-    flex: 1,
-    padding: '2rem',
-    transition: 'margin-left 0.3s ease',
-  },
-  statsCards: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '1.5rem',
-  },
-  statCard: {
-    background: 'white',
-    padding: '1.5rem',
-    borderRadius: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    textAlign: 'center',
-  },
-  cardIcon: {
-    fontSize: '2rem',
-    color: '#3498db',
-    marginBottom: '1rem',
-  },
-  mobileMenuBtn: {
-    display: 'block',
-    position: 'fixed',
-    top: 15,
-    left: 15,
-    background: '#2c3e50',
-    color: 'white',
-    border: 'none',
-    borderRadius: 4,
-    padding: '8px 12px',
-    zIndex: 1100,
-    cursor: 'pointer',
-    fontSize: '18px',
-    position: 'relative',
-  },
-  overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 999,
-  },
-  notificationBadge: {
-    position: 'absolute',
-    top: '-5px',
-    right: '-5px',
-    backgroundColor: '#e74c3c',
-    color: 'white',
-    borderRadius: '50%',
-    width: '18px',
-    height: '18px',
-    fontSize: '12px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sidebarNotificationBadge: {
-    backgroundColor: '#e74c3c',
-    color: 'white',
-    borderRadius: '50%',
-    width: '20px',
-    height: '20px',
-    fontSize: '12px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: '10px',
-  },
-  menuNotificationBadge: {
-    backgroundColor: '#e74c3c',
-    color: 'white',
-    borderRadius: '50%',
-    width: '20px',
-    height: '20px',
-    fontSize: '12px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  // Notifications page styles
-  notificationsContainer: {
-    maxWidth: '800px',
-    margin: '0 auto',
-  },
-  notificationsHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '20px',
-  },
-  markAllReadBtn: {
-    backgroundColor: '#3498db',
-    color: 'white',
-    border: 'none',
-    padding: '8px 16px',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    fontSize: '14px',
-  },
-  noNotifications: {
-    textAlign: 'center',
-    padding: '40px',
-    color: '#7f8c8d',
-  },
-  noNotificationsIcon: {
-    fontSize: '48px',
-    marginBottom: '16px',
-  },
-  notificationsList: {
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    overflow: 'hidden',
-  },
-  notificationItem: {
-    display: 'flex',
-    padding: '16px',
-    borderBottom: '1px solid #eee',
-    backgroundColor: '#fff',
-    cursor: 'pointer',
-    alignItems: 'center',
-    transition: 'background-color 0.2s',
-  },
-  unreadNotification: {
-    backgroundColor: '#f8f9fa',
-    fontWeight: 'bold',
-  },
-  notificationIcon: {
-    fontSize: '20px',
-    marginRight: '16px',
-    width: '24px',
-    textAlign: 'center',
-  },
-  notificationContent: {
-    flex: 1,
-  },
-  notificationMessage: {
-    margin: '0 0 8px 0',
-  },
-  notificationTime: {
-    fontSize: '12px',
-    color: '#7f8c8d',
-  },
-  unreadIndicator: {
-    width: '10px',
-    height: '10px',
-    borderRadius: '50%',
-    backgroundColor: '#3498db',
-    marginLeft: '10px',
-  },
-  // Media queries for mobile
-  '@media (min-width: 769px)': {
-    mobileMenuBtn: {
-      display: 'none',
-    },
-    overlay: {
-      display: 'none',
-    },
-  },
-};
 
 export default UserDashboard;

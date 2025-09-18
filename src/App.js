@@ -52,8 +52,6 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
           {/* Desktop Menu */}
           <div className={`navbar-menu ${isMenuOpen ? 'navbar-menu-open' : ''}`}>
             <Link to="/" className="navbar-link" onClick={closeMenu}>Home</Link>
-            <a href="#about" className="navbar-link" onClick={closeMenu}>About</a>
-            <a href="#contact" className="navbar-link" onClick={closeMenu}>Contact</a>
             
             {isAuthenticated ? (
               <>
@@ -69,12 +67,9 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                 </button>
               </>
             ) : (
-              <>
-                <Link to="/login" className="navbar-button login-btn" onClick={closeMenu}>
-                  Login
-                </Link>
-                
-              </>
+              <Link to="/login" className="navbar-button login-btn" onClick={closeMenu}>
+                Login
+              </Link>
             )}
           </div>
 
@@ -213,6 +208,6 @@ function App() {
       </div>
     </Router>
   );
-}
+};
 
 export default App;
