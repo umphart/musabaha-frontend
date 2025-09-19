@@ -1,5 +1,5 @@
 import React, { useState } from 'react'; 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const AuthForm = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -247,6 +247,7 @@ const AuthForm = ({ onLogin }) => {
             >
               {isSignUp ? 'Sign In' : 'Sign Up'}
             </a>
+             <Link to="/" className="navbar-link" >Home</Link>
           </p>
         </div>
       </div>

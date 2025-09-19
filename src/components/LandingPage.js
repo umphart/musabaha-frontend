@@ -11,6 +11,7 @@ const LandingPage = () => {
           <p>Your trusted partner for quality homes and real estate solutions</p>
           <div className="hero-buttons">
             <a href="#about" className="btn btn-primary">Learn More</a>
+            <a href="login" className="btn btn-primary">Get Started</a>
             <a href="#contact" className="btn btn-secondary">Contact Us</a>
           </div>
         </div>

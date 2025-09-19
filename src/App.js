@@ -54,25 +54,6 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
             <img src={MHL} alt="MUSABAHA Logo" className="navbar-logo" />
             <span className="navbar-title">MUSABAHA HOMES LTD.</span>
           </div>
-
-          {/* Desktop Menu */}
-          <div className={`navbar-menu ${isMenuOpen ? 'navbar-menu-open' : ''}`}>
-            <Link to="/" className="navbar-link" onClick={closeMenu}>Home</Link>
-            <Link to="/login" className="navbar-button create-account-btn" onClick={closeMenu}>
-              Get Started
-            </Link>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <button 
-            className={`navbar-toggle ${isMenuOpen ? 'navbar-toggle-open' : ''}`}
-            onClick={toggleMenu}
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggle-icon"></span>
-            <span className="navbar-toggle-icon"></span>
-            <span className="navbar-toggle-icon"></span>
-          </button>
         </div>
       </nav>
 

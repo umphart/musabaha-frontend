@@ -1,5 +1,6 @@
 // components/AdminLogin.js
 import React, { useState } from 'react';
+import { useNavigate,Link } from 'react-router-dom';
 import { FiLogIn, FiMail, FiLock, FiUser } from 'react-icons/fi';
 import './adminStyle.css';
 
@@ -202,6 +203,7 @@ const AdminLogin = ({ onAdminLogin }) => {
               >
                 {isLogin ? 'Sign up here' : 'Login here'}
               </button>
+               <Link to="/" className="navbar-link" >Home</Link>
             </p>
           </div>
         </form>
