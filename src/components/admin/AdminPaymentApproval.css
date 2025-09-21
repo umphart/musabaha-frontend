@@ -72,42 +72,168 @@
   color: #ef4444;
 }
 
-/* Action buttons */
-.action-buttons {
-  display: flex;
-  gap: 8px;
+/* Receipt icon link */
+.btn-receipt {
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  color:green;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  color: #007bff;
+  font-size: 18px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s, color 0.2s;
 }
 
+.btn-receipt:hover {
+  background: rgba(0, 123, 255, 0.1);
+  color: #0056b3;
+  transform: scale(1.1);
+}
 
+/* No receipt */
+.no-receipt {
+  font-size: 0.9em;
+  color: #9ca3af;
+  font-style: italic;
+}
 
+/* Disabled/processed state */
+.action-complete {
+  font-size: 0.9em;
+  color: #6c757d;
+  font-style: italic;
+}
 
-/* Approve */
-.btn-approve {
-  color: #28a745;
+/* Stats Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  color: white;
+}
+
+.stat-icon.total-deposits {
   background-color: #10b981;
-  border-radius: 4px;
-  padding: 6px;
 }
 
-.btn-approve:hover {
-  background: rgba(40, 167, 69, 0.15);
-  background-color: #059669;
+.stat-icon.pending-payments {
+  background-color: #f59e0b;
 }
 
-/* Reject */
-.btn-reject {
-  color: #dc3545;
-  background-color: #ef4444;
-  border-radius: 4px;
-  padding: 6px;
+.stat-icon.approved-payments {
+  background-color: #3b82f6;
 }
 
-.btn-reject:hover {
-  background: rgba(220, 53, 69, 0.15);
-  background-color: #dc2626;
+.stat-icon.total-users {
+  background-color: #8b5cf6;
+}
+
+.stat-content h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.stat-content p {
+  margin: 5px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+/* === Admin Payments Styles (Updated) === */
+
+.admin-payments-container {
+  padding: 20px;
+}
+
+.filter-controls {
+  margin-bottom: 20px;
+}
+
+.filter-controls label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.filter-controls select {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: white;
+}
+
+/* Table */
+.payments-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payments-table th,
+.payments-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.payments-table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+}
+
+.payments-table tr:hover {
+  background-color: #f3f4f6;
+}
+
+/* Status badges */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.pending {
+  background-color: #fffbeb;
+  color: #f59e0b;
+}
+
+.status-badge.approved {
+  background-color: #ecfdf5;
+  color: #10b981;
+}
+
+.status-badge.rejected {
+  background-color: #fef2f2;
+  color: #ef4444;
 }
 
 /* Receipt icon link */
@@ -136,6 +262,46 @@
   font-size: 0.9em;
   color: #9ca3af;
   font-style: italic;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-approve,
+.btn-reject {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-approve {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+.btn-approve:hover {
+  background-color: #a7f3d0;
+  transform: scale(1.05);
+}
+
+.btn-reject {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.btn-reject:hover {
+  background-color: #fecaca;
+  transform: scale(1.05);
 }
 
 /* Disabled/processed state */
