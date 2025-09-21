@@ -78,26 +78,11 @@
   gap: 8px;
   justify-content: center;
   align-items: center;
-  color: #6b7280;
+  color:green;
 }
 
-.action-buttons button {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 50%;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background 0.2s, transform 0.2s;
-}
 
-.action-buttons button:hover {
-  background: rgba(0, 0, 0, 0.05);
-  transform: scale(1.1);
-}
+
 
 /* Approve */
 .btn-approve {
