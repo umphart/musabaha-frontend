@@ -157,7 +157,7 @@ const UserDashboard = ({ user, onLogout }) => {
   // Mark all notifications as read
   const markAllAsRead = async () => {
     try {
-      const response = await fetch(`https://musabaha-home-ltd.onrender.com/api/notifications/user/${user.id}/read-all`, {
+      const response = await fetch(`http://localhost:5000/api/notifications/user/${user.id}/read-all`, {
         method: 'PUT'
       });
       
@@ -262,7 +262,7 @@ const UserDashboard = ({ user, onLogout }) => {
     <div className="dashboard-container">
       <ToastContainer />
       
-      {/* Mobile Toggle Button */}
+      {/* Mobile Toggle Button - Fixed at top left corner */}
       {isMobile && (
         <button className="mobile-menu-btn" onClick={toggleSidebar}>
           {sidebarOpen ? <i className="fas fa-times"></i> : <i className="fas fa-bars"></i>}
@@ -424,10 +424,18 @@ const UserDashboard = ({ user, onLogout }) => {
               color: white;
               border: none;
               border-radius: 4px;
-              padding: 8px;
+              padding: 8px 10px;
               cursor: pointer;
               box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 40px;
+              height: 40px;
+            }
+            
+            .main-content {
+              padding-top: 70px;
             }
           }
 
