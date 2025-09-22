@@ -8,27 +8,9 @@ const AdminRegisteredUsers = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalType, setModalType] = useState(null); // "docs" | "details"
 
-  const API_BASE_URL =
-    process.env.REACT_APP_API_URL || "https://musabaha-home-ltd.onrender.com/api";
+  const API_BASE_URL = "https://musabaha-home-ltd.onrender.com/api";
 
   const getAuthToken = () => localStorage.getItem("adminToken");
-
-  // Helper function to construct proper file URLs
-  const getFileUrl = (filePath) => {
-    if (!filePath) return null;
-    
-    // If it's already a full URL, return as is
-    if (filePath.startsWith('http')) {
-      return filePath;
-    }
-    
-    // Remove any leading slash to avoid double slashes
-    const cleanPath = filePath.startsWith('/') ? filePath.substring(1) : filePath;
-    
-    // Construct the proper URL
-    const baseUrl = API_BASE_URL.replace('/api', '');
-    return `${baseUrl}/${cleanPath}`;
-  };
 
   // Fetch all registered users
   const fetchUsers = async () => {
@@ -254,12 +236,15 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>📸 Passport Photo</span>
                       <a
-                        href={getFileUrl(selectedUser.passport_photo)}
+                        href={`${API_BASE_URL.replace(
+                          "/api",
+                          ""
+                        )}/${selectedUser.passport_photo}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i> View
+                        <i className="fas fa-eye"></i>
                       </a>
                     </li>
                   )}
@@ -267,12 +252,15 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>🪪 Identification</span>
                       <a
-                        href={getFileUrl(selectedUser.identification_file)}
+                        href={`${API_BASE_URL.replace(
+                          "/api",
+                          ""
+                        )}/${selectedUser.identification_file}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i> View
+                        <i className="fas fa-eye"></i>
                       </a>
                     </li>
                   )}
@@ -280,12 +268,15 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>💡 Utility Bill</span>
                       <a
-                        href={getFileUrl(selectedUser.utility_bill_file)}
+                        href={`${API_BASE_URL.replace(
+                          "/api",
+                          ""
+                        )}/${selectedUser.utility_bill_file}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i> View
+                        <i className="fas fa-eye"></i>
                       </a>
                     </li>
                   )}
@@ -293,12 +284,15 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>✍️ Signature</span>
                       <a
-                        href={getFileUrl(selectedUser.signature_file)}
+                        href={`${API_BASE_URL.replace(
+                          "/api",
+                          ""
+                        )}/${selectedUser.signature_file}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i> View
+                        <i className="fas fa-eye"></i>
                       </a>
                     </li>
                   )}
