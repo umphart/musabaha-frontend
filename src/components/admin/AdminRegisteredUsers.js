@@ -17,12 +17,14 @@ const AdminRegisteredUsers = () => {
   const getFileNameFromPath = (filePath) => {
     if (!filePath) return null;
     
-    // Handle Windows paths
+    console.log("Original path:", filePath); // For debugging
+    
+    // Handle Windows paths (with backslashes)
     if (filePath.includes('\\')) {
       return filePath.split('\\').pop();
     }
     
-    // Handle Unix paths
+    // Handle Unix paths (with forward slashes)
     if (filePath.includes('/')) {
       return filePath.split('/').pop();
     }
