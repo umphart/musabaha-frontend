@@ -601,6 +601,40 @@ const UserDashboard = ({ user, onLogout }) => {
             color: #3498db;
             margin-bottom: 1rem;
           }
+            .welcome-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.welcome-card h2 {
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+
+.welcome-card p {
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.apply-btn {
+  display: inline-block;
+  background: #3498db;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.apply-btn:hover {
+  background: #2980b9;
+}
+
         `}
       </style>
     </div>
@@ -666,7 +700,19 @@ const NotificationsPage = ({ notifications, markAsRead, markAllAsRead }) => {
 
 const DashboardHome = ({ dashboardData, loading }) => (
   <div>
-    <h2>Dashboard Overview</h2>
+    {/* Welcome Note with Quick Access */}
+    <div className="welcome-card">
+      <h2>Welcome to Your Dashboard 🎉</h2>
+      <p>
+        Manage your plots, payments, and documents all in one place.  
+        Ready to secure a new plot? Apply easily below.
+      </p>
+      <Link to="/dashboard/subscribe" className="apply-btn">
+        <i className="fas fa-file-signature"></i> Apply for Plot
+      </Link>
+    </div>
+
+    <h2 style={{ marginTop: "2rem" }}>Dashboard Overview</h2>
     {loading ? (
       <p>Loading dashboard data...</p>
     ) : (
@@ -684,16 +730,27 @@ const DashboardHome = ({ dashboardData, loading }) => (
         <div className="stat-card">
           <i className="fas fa-money-bill-wave card-icon"></i>
           <h3>Total Deposited</h3>
-          <p>₦{dashboardData.totalDeposited.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+          <p>
+            ₦{dashboardData.totalDeposited.toLocaleString('en-NG', { 
+              minimumFractionDigits: 2, 
+              maximumFractionDigits: 2 
+            })}
+          </p>
         </div>
         <div className="stat-card">
           <i className="fas fa-exclamation-triangle card-icon" style={{color: '#e74c3c'}}></i>
           <h3>Outstanding Balance</h3>
-          <p>₦{dashboardData.outstandingBalance.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+          <p>
+            ₦{dashboardData.outstandingBalance.toLocaleString('en-NG', { 
+              minimumFractionDigits: 2, 
+              maximumFractionDigits: 2 
+            })}
+          </p>
         </div>
       </div>
     )}
   </div>
 );
+
 
 export default UserDashboard;
