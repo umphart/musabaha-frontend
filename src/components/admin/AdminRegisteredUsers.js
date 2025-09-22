@@ -9,8 +9,27 @@ const AdminRegisteredUsers = () => {
   const [modalType, setModalType] = useState(null); // "docs" | "details"
 
   const API_BASE_URL = "https://musabaha-home-ltd.onrender.com/api";
+  const BASE_URL = "https://musabaha-home-ltd.onrender.com";
 
   const getAuthToken = () => localStorage.getItem("adminToken");
+
+  // Helper function to extract filename from path
+  const getFileNameFromPath = (filePath) => {
+    if (!filePath) return null;
+    
+    // Handle Windows paths
+    if (filePath.includes('\\')) {
+      return filePath.split('\\').pop();
+    }
+    
+    // Handle Unix paths
+    if (filePath.includes('/')) {
+      return filePath.split('/').pop();
+    }
+    
+    // If it's already just a filename, return as is
+    return filePath;
+  };
 
   // Fetch all registered users
   const fetchUsers = async () => {
@@ -236,15 +255,12 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>📸 Passport Photo</span>
                       <a
-                        href={`${API_BASE_URL.replace(
-                          "/api",
-                          ""
-                        )}/${selectedUser.passport_photo}`}
+                        href={`${BASE_URL}/uploads/${getFileNameFromPath(selectedUser.passport_photo)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i>
+                        <i className="fas fa-eye"></i> View
                       </a>
                     </li>
                   )}
@@ -252,15 +268,12 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>🪪 Identification</span>
                       <a
-                        href={`${API_BASE_URL.replace(
-                          "/api",
-                          ""
-                        )}/${selectedUser.identification_file}`}
+                        href={`${BASE_URL}/uploads/${getFileNameFromPath(selectedUser.identification_file)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i>
+                        <i className="fas fa-eye"></i> View
                       </a>
                     </li>
                   )}
@@ -268,15 +281,12 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>💡 Utility Bill</span>
                       <a
-                        href={`${API_BASE_URL.replace(
-                          "/api",
-                          ""
-                        )}/${selectedUser.utility_bill_file}`}
+                        href={`${BASE_URL}/uploads/${getFileNameFromPath(selectedUser.utility_bill_file)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i>
+                        <i className="fas fa-eye"></i> View
                       </a>
                     </li>
                   )}
@@ -284,15 +294,12 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>✍️ Signature</span>
                       <a
-                        href={`${API_BASE_URL.replace(
-                          "/api",
-                          ""
-                        )}/${selectedUser.signature_file}`}
+                        href={`${BASE_URL}/uploads/${getFileNameFromPath(selectedUser.signature_file)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i>
+                        <i className="fas fa-eye"></i> View
                       </a>
                     </li>
                   )}
