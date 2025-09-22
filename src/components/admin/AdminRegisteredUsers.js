@@ -13,6 +13,23 @@ const AdminRegisteredUsers = () => {
 
   const getAuthToken = () => localStorage.getItem("adminToken");
 
+  // Helper function to construct proper file URLs
+  const getFileUrl = (filePath) => {
+    if (!filePath) return null;
+    
+    // If it's already a full URL, return as is
+    if (filePath.startsWith('http')) {
+      return filePath;
+    }
+    
+    // Remove any leading slash to avoid double slashes
+    const cleanPath = filePath.startsWith('/') ? filePath.substring(1) : filePath;
+    
+    // Construct the proper URL
+    const baseUrl = API_BASE_URL.replace('/api', '');
+    return `${baseUrl}/${cleanPath}`;
+  };
+
   // Fetch all registered users
   const fetchUsers = async () => {
     try {
@@ -237,15 +254,12 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>📸 Passport Photo</span>
                       <a
-                        href={`${API_BASE_URL.replace(
-                          "/api",
-                          ""
-                        )}/${selectedUser.passport_photo}`}
+                        href={getFileUrl(selectedUser.passport_photo)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i>
+                        <i className="fas fa-eye"></i> View
                       </a>
                     </li>
                   )}
@@ -253,15 +267,12 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>🪪 Identification</span>
                       <a
-                        href={`${API_BASE_URL.replace(
-                          "/api",
-                          ""
-                        )}/${selectedUser.identification_file}`}
+                        href={getFileUrl(selectedUser.identification_file)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i>
+                        <i className="fas fa-eye"></i> View
                       </a>
                     </li>
                   )}
@@ -269,15 +280,12 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>💡 Utility Bill</span>
                       <a
-                        href={`${API_BASE_URL.replace(
-                          "/api",
-                          ""
-                        )}/${selectedUser.utility_bill_file}`}
+                        href={getFileUrl(selectedUser.utility_bill_file)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i>
+                        <i className="fas fa-eye"></i> View
                       </a>
                     </li>
                   )}
@@ -285,15 +293,12 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>✍️ Signature</span>
                       <a
-                        href={`${API_BASE_URL.replace(
-                          "/api",
-                          ""
-                        )}/${selectedUser.signature_file}`}
+                        href={getFileUrl(selectedUser.signature_file)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
                       >
-                        <i className="fas fa-eye"></i>
+                        <i className="fas fa-eye"></i> View
                       </a>
                     </li>
                   )}
