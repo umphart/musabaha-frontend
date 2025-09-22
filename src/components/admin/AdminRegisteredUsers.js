@@ -13,24 +13,46 @@ const AdminRegisteredUsers = () => {
 
   const getAuthToken = () => localStorage.getItem("adminToken");
 
-  // Helper function to extract filename from path
-  const getFileNameFromPath = (filePath) => {
+  // Simplified function to get file URL
+  const getFileUrl = (filePath) => {
     if (!filePath) return null;
     
-    console.log("Original path:", filePath); // For debugging
+    console.log("File path from DB:", filePath);
     
-    // Handle Windows paths (with backslashes)
+    // If it's already a full URL, return as is
+    if (filePath.startsWith('http')) {
+      return filePath;
+    }
+    
+    // If it contains backslashes (Windows path), extract filename
     if (filePath.includes('\\')) {
-      return filePath.split('\\').pop();
+      const filename = filePath.split('\\').pop();
+      console.log("Extracted filename from Windows path:", filename);
+      return `${BASE_URL}/uploads/${encodeURIComponent(filename)}`;
     }
     
-    // Handle Unix paths (with forward slashes)
-    if (filePath.includes('/')) {
-      return filePath.split('/').pop();
+    // If it contains forward slashes but not http (Unix path), extract filename
+    if (filePath.includes('/') && !filePath.startsWith('http')) {
+      const filename = filePath.split('/').pop();
+      console.log("Extracted filename from Unix path:", filename);
+      return `${BASE_URL}/uploads/${encodeURIComponent(filename)}`;
     }
     
-    // If it's already just a filename, return as is
-    return filePath;
+    // If it's just a filename, use it directly
+    console.log("Using as filename:", filePath);
+    return `${BASE_URL}/uploads/${encodeURIComponent(filePath)}`;
+  };
+
+  // Test if a file exists
+  const testFileExists = async (url) => {
+    try {
+      const response = await fetch(url, { method: 'HEAD' });
+      console.log(`File ${url} exists:`, response.ok);
+      return response.ok;
+    } catch (error) {
+      console.log(`File ${url} check failed:`, error);
+      return false;
+    }
   };
 
   // Fetch all registered users
@@ -123,6 +145,29 @@ const AdminRegisteredUsers = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  // Debug file access when modal opens
+  useEffect(() => {
+    if (selectedUser && modalType === "docs") {
+      console.log("=== DEBUGGING FILE PATHS ===");
+      console.log("Selected user:", selectedUser.name);
+      
+      const files = {
+        passport: selectedUser.passport_photo,
+        identification: selectedUser.identification_file,
+        utility: selectedUser.utility_bill_file,
+        signature: selectedUser.signature_file
+      };
+      
+      Object.entries(files).forEach(([type, path]) => {
+        if (path) {
+          const url = getFileUrl(path);
+          console.log(`${type} URL:`, url);
+          testFileExists(url);
+        }
+      });
+    }
+  }, [selectedUser, modalType]);
 
   // Modal close
   const closeModal = () => {
@@ -257,10 +302,14 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>📸 Passport Photo</span>
                       <a
-                        href={`${BASE_URL}/uploads/${getFileNameFromPath(selectedUser.passport_photo)}`}
+                        href={getFileUrl(selectedUser.passport_photo)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.open(getFileUrl(selectedUser.passport_photo), '_blank');
+                        }}
                       >
                         <i className="fas fa-eye"></i> View
                       </a>
@@ -270,10 +319,14 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>🪪 Identification</span>
                       <a
-                        href={`${BASE_URL}/uploads/${getFileNameFromPath(selectedUser.identification_file)}`}
+                        href={getFileUrl(selectedUser.identification_file)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.open(getFileUrl(selectedUser.identification_file), '_blank');
+                        }}
                       >
                         <i className="fas fa-eye"></i> View
                       </a>
@@ -283,10 +336,14 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>💡 Utility Bill</span>
                       <a
-                        href={`${BASE_URL}/uploads/${getFileNameFromPath(selectedUser.utility_bill_file)}`}
+                        href={getFileUrl(selectedUser.utility_bill_file)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.open(getFileUrl(selectedUser.utility_bill_file), '_blank');
+                        }}
                       >
                         <i className="fas fa-eye"></i> View
                       </a>
@@ -296,10 +353,14 @@ const AdminRegisteredUsers = () => {
                     <li>
                       <span>✍️ Signature</span>
                       <a
-                        href={`${BASE_URL}/uploads/${getFileNameFromPath(selectedUser.signature_file)}`}
+                        href={getFileUrl(selectedUser.signature_file)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="doc-link"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.open(getFileUrl(selectedUser.signature_file), '_blank');
+                        }}
                       >
                         <i className="fas fa-eye"></i> View
                       </a>
